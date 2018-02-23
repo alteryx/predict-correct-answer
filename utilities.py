@@ -1,8 +1,6 @@
+import featuretools.variable_types as vtypes
 import pandas as pd
 import featuretools as ft
-
-import featuretools.variable_types as vtypes
-
 def learnlab_to_entityset(data):
     # Make an EntitySet called Dataset with the following structure
     #
