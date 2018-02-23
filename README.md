@@ -14,13 +14,16 @@ In this tutorial, we show how to use [Featuretools](https://www.featuretools.com
 
 ## Demonstration
 
-The main notebook can be found [here](Demo%20-%20LearnLab.ipynb). The notebook relies on a `learnlab_to_entityset` function which is described in depth in the [entityset_function notebook](entityset_function.ipynb). 
+The main notebook can be found [here](Demo%20-%20LearnLab.ipynb). 
 
-To run either notebook, you will need to download Featuretools with
+To run the notebook, you will need to download Featuretools with
 ```
 pip install featuretools
 ```
-and the geometry dataset from [the datashop website](https://pslcdatashop.web.cmu.edu/DatasetInfo?datasetId=76) (free account required). Take the `.txt` file from the zipped download and place it in the `data` folder in this repository.
+and the geometry dataset from [the datashop website](https://pslcdatashop.web.cmu.edu/DatasetInfo?datasetId=76) (free account required). Take the `.txt` file from the zipped download and place it in the `data` folder in this repository. The notebook relies on a `learnlab_to_entityset` function which is described in depth in the [entityset_function notebook](entityset_function.ipynb). 
 
 ## Feature Labs
+<a href="https://www.featurelabs.com/">
+    <img src="http://www.featurelabs.com/wp-content/uploads/2017/12/logo.png" alt="Featuretools" />
+</a>
 Featuretools was created by the developers at [Feature Labs](https://www.featurelabs.com/). If building impactful data science pipelines is important to you or your business, please [get in touch](https://www.featurelabs.com/contact.html).
