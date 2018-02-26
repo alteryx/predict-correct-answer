@@ -3,9 +3,9 @@
     <img width=50% src="https://www.featuretools.com/wp-content/uploads/2017/12/FeatureLabs-Logo-Tangerine-800.png" alt="Featuretools" />
 </a>
 
-In this tutorial, we show how to use [Featuretools](https://www.featuretools.com) on the standard DataShop dataset structure. The workflow shown here can be used to quickly **organize** and **make predictions** about any DataShop dataset.
+In this tutorial, we show how to predict whether a student will succesfully answer a problem using a dataset from [CMU DataShop](https://pslcdatashop.web.cmu.edu/). The workflow shown here can be used to quickly **organize** and **make predictions** about any DataShop dataset.
 
-*If you're running this notebook yourself, please download the [geometry dataset](https://pslcdatashop.web.cmu.edu/DatasetInfo?datasetId=76) into the `data` folder in this repository. You will only need the `.txt` file. The infrastructure in this notebook will work with **any** DataShop dataset, but you will need to change the filename in the following cell.*
+*If you're running the [notebook](Demo%20-%20DataShop.ipynb) yourself, please download the [geometry dataset](https://pslcdatashop.web.cmu.edu/DatasetInfo?datasetId=76) into the `data` folder in this repository. You will only need the `.txt` file. The infrastructure in that notebook will work with **any** DataShop dataset, but you will need to change the filename to the dataset you'd like to load.
 
 ## Highlights
 * Show how to import a DataShop dataset into featuretools
