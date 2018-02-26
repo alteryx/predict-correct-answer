@@ -6,8 +6,12 @@ from featuretools.selection import remove_low_information_features
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import roc_auc_score
 
+from bokeh.plotting import figure
+from bokeh.palettes import Spectral10
+from bokeh.io import show
 
-def learnlab_to_entityset(data):
+
+def learnlab_to_entityset(filename):
     # Make an EntitySet called Dataset with the following structure
     #
     # schools       students     problems
@@ -16,9 +20,11 @@ def learnlab_to_entityset(data):
     #          \     |       /
     #           transactions  -- attempts
     #
+    data = pd.read_csv(filename, '\t')
+
     data.index = data['Transaction Id']
     data = data.drop(['Row'], axis=1)
-    #data = data[data['Duration (sec)'] != '.']
+    # data = data[data['Duration (sec)'] != '.']
 
     kc_and_cf_cols = [x for x in data.columns if (x.startswith('KC ') or x.startswith('CF '))]
     kc_and_cf_cols.append('Problem Name')
@@ -37,7 +43,7 @@ def learnlab_to_entityset(data):
     es.normalize_entity(base_entity_id='transactions',
                         new_entity_id='problem_steps',
                         index='Step Name',
-                        additional_variables=kc_and_cf_cols,
+                        additional_variables=['Problem Name'],
                         make_time_index=False)
 
     es.normalize_entity(base_entity_id='problem_steps',
@@ -78,9 +84,8 @@ def learnlab_to_entityset(data):
     return es
 
 
-def autorun_dfs(es, target_entity='transactions',
-                label='Outcome', custom_agg=[]):
-    cutoff_times = es[target_entity].df[['Transaction Id', 'End Time', label]]
+def create_features(es, label='Outcome', custom_agg=[]):
+    cutoff_times = es['transactions'].df[['Transaction Id', 'End Time', label]]
     fm, features = ft.dfs(entityset=es,
                           target_entity='transactions',
                           agg_primitives=[Sum, Mean] + custom_agg,
@@ -109,7 +114,26 @@ def score_with_tssplit(fm_enc, label, splitter):
         feature_imps = [(imp, fm_enc.columns[i]) for i, imp in enumerate(clf.feature_importances_)]
         feature_imps.sort()
         feature_imps.reverse()
-        print("Top 5 features: {}".format([f[1] for f in feature_imps[0:5]]))
+        # print("Top 5 features: {}".format([f[1] for f in feature_imps[0:5]]))
+        print('Feature Importances: ')
+        for i, f in enumerate(feature_imps[0:5]):
+            print('{}: {}'.format(i + 1, f[1]))
         print("-----\n")
 
         k += 1
+
+
+def plot(fm, col1='', col2='', label=None):
+    colormap = {name: Spectral10[3 * name % 10] for name in label}
+    colors = [colormap[x] for x in label]
+    p = figure(title='{} vs. {}'.format(col1, col2),
+               tools=['box_zoom', 'reset'], width=800)
+    p.scatter(x=fm[col1],
+              y=fm[col2],
+              color=colors,
+              alpha=.8)
+
+    p.xaxis.axis_label = col1
+    p.yaxis.axis_label = col2
+    show(p)
+    return p

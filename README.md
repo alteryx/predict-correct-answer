@@ -16,6 +16,8 @@ In this tutorial, we show how to use [Featuretools](https://www.featuretools.com
 
 The main notebook can be found [here](Demo%20-%20LearnLab.ipynb). 
 
+![Example image](data/images/exampleimage.png)
+
 To run the notebook, you will need to download Featuretools with
 ```
 pip install featuretools
