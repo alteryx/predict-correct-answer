@@ -11,7 +11,7 @@ from bokeh.palettes import Spectral10
 from bokeh.io import show
 
 
-def learnlab_to_entityset(filename):
+def datashop_to_entityset(filename):
     # Make an EntitySet called Dataset with the following structure
     #
     # schools       students     problems
@@ -20,17 +20,25 @@ def learnlab_to_entityset(filename):
     #          \     |       /
     #           transactions  -- attempts
     #
+
+    # Convert the csv into a dataframe using pandas
     data = pd.read_csv(filename, '\t')
 
+    # Make the Transaction Id the index column of the dataframe and clean other columns
     data.index = data['Transaction Id']
     data = data.drop(['Row'], axis=1)
-    # data = data[data['Duration (sec)'] != '.']
-
-    kc_and_cf_cols = [x for x in data.columns if (x.startswith('KC ') or x.startswith('CF '))]
-    kc_and_cf_cols.append('Problem Name')
     data['Outcome'] = data['Outcome'].map({'INCORRECT': 0, 'CORRECT': 1})
+
+    # Make a new 'End Time' column which is start_time + duration
+    # This is /super useful/ because you shouldn't be using outcome data at
+    # any point before the student has attempted the problem.
     data['End Time'] = pd.to_datetime(data['Time']) + pd.to_timedelta(pd.to_numeric(data['Duration (sec)']), 's')
 
+    # Make a list of all the KC and CF columns present
+    kc_and_cf_cols = [x for x in data.columns if (x.startswith('KC ') or x.startswith('CF '))]
+
+    # Now we start making an entityset. We make 'End Time' a time index for 'Outcome'
+    # even though our primary time index for a row is 'Time' preventing label leakage.
     es = ft.EntitySet('Dataset')
     es.entity_from_dataframe(entity_id='transactions',
                              index='Transaction Id',
@@ -39,7 +47,7 @@ def learnlab_to_entityset(filename):
                              time_index='Time',
                              secondary_time_index={'End Time': ['Outcome', 'Is Last Attempt', 'Duration (sec)']})
 
-    # Two entities associated to problems
+    # Every transaction has a `problem_step` which is associated to a problem
     es.normalize_entity(base_entity_id='transactions',
                         new_entity_id='problem_steps',
                         index='Step Name',
@@ -51,7 +59,7 @@ def learnlab_to_entityset(filename):
                         index='Problem Name',
                         make_time_index=False)
 
-    # Two entities associated to students
+    # Every transaction has a `session` associated to a student
     es.normalize_entity(base_entity_id='transactions',
                         new_entity_id='sessions',
                         index='Session Id',
@@ -63,7 +71,7 @@ def learnlab_to_entityset(filename):
                         index='Anon Student Id',
                         make_time_index=True)
 
-    # Two entities associated to a school
+    # Every transaction has a `class` associated to a school
     es.normalize_entity(base_entity_id='transactions',
                         new_entity_id='classes',
                         index='Class',
@@ -75,7 +83,8 @@ def learnlab_to_entityset(filename):
                         index='School',
                         make_time_index=False)
 
-    # An entity associated to attempts
+    # And because we might be interested in creating features grouped
+    # by attempts we normalize by those as well.
     es.normalize_entity(base_entity_id='transactions',
                         new_entity_id='attempts',
                         index='Attempt At Step',
