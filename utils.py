@@ -7,7 +7,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import roc_auc_score
 
 from bokeh.plotting import figure
-from bokeh.palettes import Spectral10
+from bokeh.models import ColumnDataSource
 from bokeh.io import show
 
 
@@ -110,7 +110,7 @@ def create_features(es, label='Outcome', custom_agg=[]):
     return (fm_enc, labels)
 
 
-def score_with_tssplit(fm_enc, label, splitter):
+def estimate_score(fm_enc, label, splitter):
     k = 0
     for train_index, test_index in splitter.split(fm_enc):
         clf = RandomForestClassifier()
@@ -123,7 +123,6 @@ def score_with_tssplit(fm_enc, label, splitter):
         feature_imps = [(imp, fm_enc.columns[i]) for i, imp in enumerate(clf.feature_importances_)]
         feature_imps.sort()
         feature_imps.reverse()
-        # print("Top 5 features: {}".format([f[1] for f in feature_imps[0:5]]))
         print('Feature Importances: ')
         for i, f in enumerate(feature_imps[0:5]):
             print('{}: {}'.format(i + 1, f[1]))
@@ -132,17 +131,29 @@ def score_with_tssplit(fm_enc, label, splitter):
         k += 1
 
 
-def plot(fm, col1='', col2='', label=None):
-    colormap = {name: Spectral10[3 * name % 10] for name in label}
+def plot(fm, col1='', col2='', label=None, names=['', '', '']):
+    colorlist = ['#3A3A3A',  '#1072B9', '#B22222']
+    colormap = {name: colorlist[name] for name in label}
     colors = [colormap[x] for x in label]
-    p = figure(title='{} vs. {}'.format(col1, col2),
+    labelmap = {0: 'INCORRECT', 1: 'CORRECT'}
+    desc = [labelmap[x] for x in label]
+    source = ColumnDataSource(dict(
+        x=fm[col1],
+        y=fm[col2],
+        desc=desc,
+        color=colors,
+        index=fm.index,
+    ))
+    p = figure(title=names[0],
                tools=['box_zoom', 'reset'], width=800)
-    p.scatter(x=fm[col1],
-              y=fm[col2],
-              color=colors,
+    p.scatter(x='x',
+              y='y',
+              color='color',
+              legend='desc',
+              source=source,
               alpha=.8)
 
-    p.xaxis.axis_label = col1
-    p.yaxis.axis_label = col2
+    p.xaxis.axis_label = names[1]
+    p.yaxis.axis_label = names[2]
     show(p)
     return p
