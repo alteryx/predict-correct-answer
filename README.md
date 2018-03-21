@@ -9,7 +9,6 @@ In this tutorial, we show how to predict whether a student will succesfully answ
 
 ## Highlights
 * Show how to import a DataShop dataset into featuretools
-* Show how to make custom primitives for stacking
 * Show efficacy of automatic feature generation with these datasets
 
 ## Demonstration

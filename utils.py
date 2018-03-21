@@ -22,7 +22,7 @@ def datashop_to_entityset(filename):
     #
 
     # Convert the csv into a dataframe using pandas
-    data = pd.read_csv(filename, '\t')
+    data = pd.read_csv(filename, '\t', parse_dates=True)
 
     # Make the Transaction Id the index column of the dataframe and clean other columns
     data.index = data['Transaction Id']
@@ -32,10 +32,12 @@ def datashop_to_entityset(filename):
     # Make a new 'End Time' column which is start_time + duration
     # This is /super useful/ because you shouldn't be using outcome data at
     # any point before the student has attempted the problem.
-    data['End Time'] = pd.to_datetime(data['Time']) + pd.to_timedelta(pd.to_numeric(data['Duration (sec)']), 's')
+    data['End Time'] = pd.to_datetime(
+        data['Time']) + pd.to_timedelta(pd.to_numeric(data['Duration (sec)']), 's')
 
     # Make a list of all the KC and CF columns present
-    kc_and_cf_cols = [x for x in data.columns if (x.startswith('KC ') or x.startswith('CF '))]
+    kc_and_cf_cols = [x for x in data.columns if (
+        x.startswith('KC ') or x.startswith('CF '))]
 
     # Now we start making an entityset. We make 'End Time' a time index for 'Outcome'
     # even though our primary time index for a row is 'Time' preventing label leakage.
@@ -45,19 +47,21 @@ def datashop_to_entityset(filename):
                              dataframe=data,
                              variable_types={'Outcome': vtypes.Boolean},
                              time_index='Time',
-                             secondary_time_index={'End Time': ['Outcome', 'Is Last Attempt', 'Duration (sec)']})
+                             secondary_time_index={'End Time': [
+                                 'Outcome', 'Is Last Attempt', 'Duration (sec)']}
+                             )
 
     # Every transaction has a `problem_step` which is associated to a problem
     es.normalize_entity(base_entity_id='transactions',
                         new_entity_id='problem_steps',
                         index='Step Name',
-                        additional_variables=['Problem Name'],
-                        make_time_index=False)
+                        additional_variables=['Problem Name'] + kc_and_cf_cols,
+                        make_time_index=True)
 
     es.normalize_entity(base_entity_id='problem_steps',
                         new_entity_id='problems',
                         index='Problem Name',
-                        make_time_index=False)
+                        make_time_index=True)
 
     # Every transaction has a `session` associated to a student
     es.normalize_entity(base_entity_id='transactions',
@@ -120,15 +124,18 @@ def estimate_score(fm_enc, label, splitter):
         preds = clf.predict(X_test)
         score = round(roc_auc_score(preds, y_test), 2)
         print("AUC score on time split {} is {}".format(k, score))
-        feature_imps = [(imp, fm_enc.columns[i]) for i, imp in enumerate(clf.feature_importances_)]
-        feature_imps.sort()
-        feature_imps.reverse()
-        print('Feature Importances: ')
-        for i, f in enumerate(feature_imps[0:5]):
-            print('{}: {}'.format(i + 1, f[1]))
-        print("-----\n")
 
-        k += 1
+
+def feature_importances(fm_enc, clf, feats=5):
+    feature_imps = [(imp, fm_enc.columns[i])
+                    for i, imp in enumerate(clf.feature_importances_)]
+    feature_imps.sort()
+    feature_imps.reverse()
+    print('Feature Importances: ')
+    for i, f in enumerate(feature_imps[0:feats]):
+        print('{}: {}'.format(i + 1, f[1]))
+    print("-----\n")
+    return ([f[1] for f in feature_imps[0:feats]])
 
 
 def plot(fm, col1='', col2='', label=None, names=['', '', '']):
@@ -157,3 +164,10 @@ def plot(fm, col1='', col2='', label=None, names=['', '', '']):
     p.yaxis.axis_label = names[2]
     show(p)
     return p
+
+from sklearn.preprocessing import LabelEncoder
+def inplace_encoder(X):
+    for col in X:
+        le = LabelEncoder()
+        X[col] = le.fit_transform(X[[col]].astype(str))
+    return X
