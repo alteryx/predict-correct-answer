@@ -5,7 +5,7 @@
 
 In this tutorial, we show how to predict whether a student will succesfully answer a problem using a dataset from [CMU DataShop](https://pslcdatashop.web.cmu.edu/). The workflow shown here can be used to quickly **organize** and **make predictions** about any DataShop dataset.
 
-*If you're running the [notebook](Demo%20-%20DataShop.ipynb) yourself, please download the [geometry dataset](https://pslcdatashop.web.cmu.edu/DatasetInfo?datasetId=76) into the `data` folder in this repository. You will only need the `.txt` file. The infrastructure in that notebook will work with **any** DataShop dataset, but you will need to change the filename to the dataset you'd like to load.
+*If you're running the [notebook](Demo%20-%20DataShop.ipynb) yourself, please download the [geometry dataset](https://pslcdatashop.web.cmu.edu/DatasetInfo?datasetId=76) into the `data` folder in this repository. You will only need the `.txt` file. The infrastructure in that notebook will work with **any** DataShop dataset, but you will need to change the filename to the dataset you'd like to load.*
 
 ## Highlights
 * Show how to import a DataShop dataset into featuretools
