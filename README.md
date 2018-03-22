@@ -10,18 +10,23 @@ In this tutorial, we show how to predict whether a student will succesfully answ
 ## Highlights
 * Show how to import a DataShop dataset into featuretools
 * Show efficacy of automatic feature generation with these datasets
+* Show an example end-to-end pipeline for a prediction problem
 
-## Demonstration
-
-The main notebook can be found [here](Demo%20-%20DataShop.ipynb). 
+Here is a plot of two automatically generated features: 
 
 ![Example image](data/images/exampleimage.png)
 
-To run the notebook, you will need to download Featuretools with
+Notice that *most* students have between a 65% and 90% rate of getting a problem right overall, and most problems take fewer than 20 seconds on average. Outside of those ranges, we can start to take educated guesses about `Outcomes`. 
+
+If a student has historically answered less the 65% of problems correctly or the current problem took other students more than 20 seconds to do, the chances are higher that the next attempt the student makes will be wrong. Similarly, if the a student's success rate has been above 90%, chances are a lot higher they'll get the next question right as well!
+
+## Demonstration
+
+The main notebook can be found [here](Demo%20-%20DataShop.ipynb). To run the notebook, you will need to download Featuretools with
 ```
 pip install featuretools
 ```
-and the geometry dataset from [the datashop website](https://pslcdatashop.web.cmu.edu/DatasetInfo?datasetId=76) (free account required). Take the `.txt` file from the zipped download and place it in the `data` folder in this repository. The notebook relies on a `datashop_to_entityset` function which is described in depth in the [entityset_function notebook](entityset_function.ipynb). 
+and the geometry dataset from [the datashop website](https://pslcdatashop.web.cmu.edu/DatasetInfo?datasetId=76) (free account required). Take the `.txt` file from the zipped download and place it in the `data` folder in this repository. The notebook relies on a `datashop_to_entityset` function which is described in depth in the [entityset_function notebook](entityset_function.ipynb).
 
 ## Feature Labs
 <a href="https://www.featurelabs.com/">
