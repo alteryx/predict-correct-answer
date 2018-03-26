@@ -7,7 +7,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import roc_auc_score
 
 from bokeh.plotting import figure
-from bokeh.models import ColumnDataSource
+from bokeh.models import ColumnDataSource, HoverTool
 from bokeh.io import show
 
 
@@ -138,7 +138,7 @@ def feature_importances(fm_enc, clf, feats=5):
     return ([f[1] for f in feature_imps[0:feats]])
 
 
-def plot(fm, col1='', col2='', label=None, names=['', '', '']):
+def datashop_plot(fm, col1='', col2='', label=None, names=['', '', '']):
     colorlist = ['#3A3A3A',  '#1072B9', '#B22222']
     colormap = {name: colorlist[name] for name in label}
     colors = [colormap[x] for x in label]
@@ -150,19 +150,27 @@ def plot(fm, col1='', col2='', label=None, names=['', '', '']):
         desc=desc,
         color=colors,
         index=fm.index,
+        problem_step=fm['Step Name'],
+        problem=fm['problem_steps.Problem Name'],
+        attempt=fm['Attempt At Step']
     ))
+    hover = HoverTool(tooltips=[
+    ("(x,y)", "(@x, @y)"),
+    ("problem", "@problem"),
+    ("problem step", "@problem_step"),
+    ])
+    
     p = figure(title=names[0],
-               tools=['box_zoom', 'reset'], width=800)
+               tools=['box_zoom', hover, 'reset'], width=800)
     p.scatter(x='x',
               y='y',
               color='color',
               legend='desc',
               source=source,
-              alpha=.8)
+              alpha=.6)
 
     p.xaxis.axis_label = names[1]
     p.yaxis.axis_label = names[2]
-    show(p)
     return p
 
 from sklearn.preprocessing import LabelEncoder
