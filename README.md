@@ -16,9 +16,7 @@ Here is a plot of two automatically generated features:
 
 ![Example image](data/images/exampleimage.png)
 
-Notice that *most* students have between a 65% and 90% rate of getting a problem right overall, and most problems take fewer than 20 seconds on average. Outside of those ranges, we can start to take educated guesses about `Outcomes`. 
-
-If a student has historically answered less the 65% of problems correctly or the current problem took other students more than 20 seconds to do, the chances are higher that the next attempt the student makes will be wrong. Similarly, if the a student's success rate has been above 90%, chances are a lot higher they'll get the next question right as well!
+This is an image of the average time spent on a problem versus the success rate on a given problem. There is an interactive version of this plot which you can download by right clicking and saving the download link button on [this](data/images/difficulty_vs_time.html) page. Notice that the success rate on problems that take longer is uniformly lower for this dataset.
 
 ## Demonstration
 
