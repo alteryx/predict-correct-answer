@@ -3,20 +3,20 @@
     <img width=50% src="https://www.featuretools.com/wp-content/uploads/2017/12/FeatureLabs-Logo-Tangerine-800.png" alt="Featuretools" />
 </a>
 
-In this tutorial, we show how to predict whether a student will succesfully answer a problem using a dataset from [CMU DataShop](https://pslcdatashop.web.cmu.edu/). The workflow shown here can be used to quickly **organize** and **make predictions** about any DataShop dataset.
+In this tutorial, we show how to predict whether a student will succesfully answer a problem using a dataset from [CMU DataShop](https://pslcdatashop.web.cmu.edu/). While online courses are logistically efficient, the structure can make it more difficult for a teacher to understand how students are learning in their class. To try to fill in those gaps, we can apply machine learning. However, building an accurate machine learning model requires extracting information called **features**. Finding the right features is a crucial component of both finding a satisfactory answer and of interpreting the dataset as a whole. The process of **feature engineering** is made simple by [Featuretools](http://www.featuretools.com).
 
 *If you're running the [notebook](Demo%20-%20DataShop.ipynb) yourself, please download the [geometry dataset](https://pslcdatashop.web.cmu.edu/DatasetInfo?datasetId=76) into the `data` folder in this repository. You will only need the `.txt` file. The infrastructure in that notebook will work with **any** DataShop dataset, but you will need to change the filename to the dataset you'd like to load.*
 
 ## Highlights
 * Show how to import a DataShop dataset into featuretools
-* Show efficacy of automatic feature generation with these datasets
-* Show an example end-to-end pipeline for a prediction problem
+* Demonstrate efficacy of automatic feature generation by training a machine learning model 
+* Give an example of how Featuretools can reveal and help answer interesting questions
 
 Here is a plot of two automatically generated features: 
 
 ![Example image](data/images/exampleimage.png)
 
-This is an image of the average time spent on a problem versus the success rate on a given problem. There is an interactive version of this plot which you can download by right clicking and saving the download link button on [this](data/images/difficulty_vs_time.html) page. Notice that the success rate on problems that take longer is uniformly lower for this dataset.
+This is an image of the average time spent on a problem versus the success rate on a given problem. There is an [interactive version](https://www.featuretools.com/wp-content/uploads/2018/03/difficulty_vs_time.html) of this plot which lets you hover over individual points to see the problem and problem step. Notice that the success rate on problems that take longer is uniformly lower for this dataset.
 
 ## Demonstration
 
