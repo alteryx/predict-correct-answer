@@ -45,7 +45,7 @@ def datashop_to_entityset(filename):
     es.entity_from_dataframe(entity_id='transactions',
                              index='Transaction Id',
                              dataframe=data,
-                             variable_types={'Outcome': vtypes.Boolean},
+                             variable_types={'Outcome': vtypes.Boolean, 'Attempt At Step': vtypes.Categorical},
                              time_index='Time',
                              secondary_time_index={'End Time': [
                                  'Outcome', 'Is Last Attempt', 'Duration (sec)']}
@@ -89,11 +89,11 @@ def datashop_to_entityset(filename):
 
     # And because we might be interested in creating features grouped
     # by attempts we normalize by those as well.
-    es.normalize_entity(base_entity_id='transactions',
-                        new_entity_id='attempts',
-                        index='Attempt At Step',
-                        additional_variables=[],
-                        make_time_index=False)
+#     es.normalize_entity(base_entity_id='transactions',
+#                         new_entity_id='attempts',
+#                         index='Attempt At Step',
+#                         additional_variables=[],
+#                         make_time_index=False)
     return es
 
 
