@@ -1,7 +1,7 @@
 import featuretools.variable_types as vtypes
 import pandas as pd
 import featuretools as ft
-from featuretools.primitives import Sum, Mean, Median, Count, Hour
+from featuretools.primitives import Sum, Mean, Hour
 from featuretools.selection import remove_low_information_features
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import roc_auc_score
@@ -159,7 +159,7 @@ def datashop_plot(fm, col1='', col2='', label=None, names=['', '', '']):
     ("problem", "@problem"),
     ("problem step", "@problem_step"),
     ])
-    
+
     p = figure(title=names[0],
                tools=['box_zoom', hover, 'reset'], width=800)
     p.scatter(x='x',

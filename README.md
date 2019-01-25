@@ -36,10 +36,18 @@ This is an image of the average time spent on a problem versus the success rate 
 
 3. Download the data
 
-    You can download the geometry dataset from [the datashop website](https://pslcdatashop.web.cmu.edu/DatasetInfo?datasetId=76) (free account required). Take the `.txt` file from the zipped download and place it in the `data` folder in this repository.
+    You can download the geometry dataset from [the datashop website](https://pslcdatashop.web.cmu.edu/DatasetInfo?datasetId=76) (free account required). Follow this [instructions](https://pslcdatashop.web.cmu.edu/help?datasetId=76&page=export) to download the data. Take the `.txt` file from the zipped download and place it in the `data` folder in this repository.
 
 4. Run the Tutorial notebook:<br>
+
+    ```
+    jupyter notebook
+    ```
+
    - [Demo - DataShop](Demo%20-%20DataShop.ipynb)<br>
+
+
+
    *Note: The notebook relies on a `datashop_to_entityset` function which is described in depth in the [entityset_function notebook](entityset_function.ipynb).*
 
 ## Feature Labs
@@ -47,7 +55,7 @@ This is an image of the average time spent on a problem versus the success rate 
     <img src="http://www.featurelabs.com/wp-content/uploads/2017/12/logo.png" alt="Featuretools" />
 </a>
 
-Featuretools is an open source project created by [Feature Labs](https://www.featurelabs.com/). To see the other open source projects we're working on visit Feature Labs [Open Source](https://www.featurelabs.com/open). If building impactful data science pipelines is important to you or your business, please [get in touch](https://www.featurelabs.com/contact.html).
+Featuretools is an open source project created by [Feature Labs](https://www.featurelabs.com/). To see the other open source projects we're working on visit Feature Labs [Open Source](https://www.featurelabs.com/open). If building impactful data science pipelines is important to you or your business, please [get in touch](https://www.featurelabs.com/contact/).
 
 ### Contact
 
