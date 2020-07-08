@@ -165,7 +165,7 @@ def datashop_plot(fm, col1='', col2='', label=None, names=['', '', '']):
     p.scatter(x='x',
               y='y',
               color='color',
-              legend='desc',
+              legend_group='desc',
               source=source,
               alpha=.6)
 
